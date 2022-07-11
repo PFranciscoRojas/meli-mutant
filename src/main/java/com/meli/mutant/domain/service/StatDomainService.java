@@ -8,7 +8,7 @@ import java.util.List;
 
 @Service
 public class StatDomainService {
-    private StatDomainRepository statDomainRepository;
+    private final StatDomainRepository statDomainRepository;
 
     public StatDomainService(StatDomainRepository statDomainRepository) {
         this.statDomainRepository = statDomainRepository;

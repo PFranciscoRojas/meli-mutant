@@ -11,8 +11,8 @@ import java.util.List;
 
 @Repository
 public class StatRepository implements StatDomainRepository {
-    private StatCrudRepository statCrudRepository;
-    private StatMapper mapper;
+    private final StatCrudRepository statCrudRepository;
+    private final StatMapper mapper;
 
     public StatRepository(StatCrudRepository statCrudRepository, StatMapper statMapper) {
         this.statCrudRepository = statCrudRepository;
