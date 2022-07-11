@@ -31,11 +31,11 @@ public class StatDomain {
         this.countHumanDna = countHumanDna;
     }
 
-    public Double getRatio() {
+    public Double getRatioStat() {
         return ratioStat;
     }
 
-    public void setRatio(Double ratio) {
-        this.ratioStat = ratio;
+    public void setRatioStat(Double ratioStat) {
+        this.ratioStat = ratioStat;
     }
 }

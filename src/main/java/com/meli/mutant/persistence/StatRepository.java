@@ -1,20 +1,28 @@
 package com.meli.mutant.persistence;
 
+import com.meli.mutant.domain.StatDomain;
+import com.meli.mutant.domain.repository.StatDomainRepository;
 import com.meli.mutant.persistence.crud.StatCrudRepository;
 import com.meli.mutant.persistence.entity.Stat;
+import com.meli.mutant.persistence.mapper.StatMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public class StatRepository {
+public class StatRepository implements StatDomainRepository {
     private StatCrudRepository statCrudRepository;
+    private StatMapper mapper;
 
-    public List<Stat> getAll(){
-        return statCrudRepository.findAll();
+    public StatRepository(StatCrudRepository statCrudRepository, StatMapper statMapper) {
+        this.statCrudRepository = statCrudRepository;
+        this.mapper = statMapper;
     }
 
-    public Stat save(Stat stat){
-        return statCrudRepository.save(stat);
+    @Override
+    public List<StatDomain> getAll(){
+        List<Stat> stats = statCrudRepository.findAll();
+        return mapper.toStatsDomain(stats);
     }
+
 }

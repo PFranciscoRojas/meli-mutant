@@ -7,6 +7,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface StatMapper {
 
@@ -14,9 +16,11 @@ public interface StatMapper {
             @Mapping(source = "id",target = "idStat"),
             @Mapping(source = "count_mutant_dna",target = "countMutantDna"),
             @Mapping(source = "count_human_dna",target = "countHumanDna"),
-            @Mapping(source = "ratio",target = "ratioStat"),
+            @Mapping(source = "ratio",target = "ratioStat")
     })
     StatDomain toStatDomain(Stat stat);
+
+    List<StatDomain> toStatsDomain(List<Stat> stats);
 
     @InheritInverseConfiguration
     Stat toStat(StatDomain statDomain);
