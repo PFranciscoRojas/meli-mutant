@@ -1,6 +1,9 @@
 package com.meli.mutant.domain.service;
 
+import com.meli.mutant.domain.repository.DnaSequenceDomainRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -9,7 +12,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @AutoConfigureTestEntityManager
 class DnaSequenceDomainServiceTest {
-    private DnaSequenceDomainService dnaSequenceDomainService = new DnaSequenceDomainService();
+
+    DnaSequenceDomainRepository dnaSequenceDomainRepository = Mockito.mock(DnaSequenceDomainRepository.class);
+    DnaSequenceDomainService dnaSequenceDomainService = new DnaSequenceDomainService(dnaSequenceDomainRepository);
 
     @Test
     public void be_false_when_sequence_dna_is_null() {

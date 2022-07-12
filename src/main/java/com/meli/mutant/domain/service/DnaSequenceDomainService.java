@@ -14,15 +14,12 @@ public class DnaSequenceDomainService {
     private DnaSequenceDomainRepository dnaSequenceDomainRepository;
     private final Log LOGGER = LogFactory.getLog(DnaSequenceDomainService.class);
 
-    public DnaSequenceDomainService() {
-    }
-
     public DnaSequenceDomainService(DnaSequenceDomainRepository dnaSequenceDomainRepository) {
         this.dnaSequenceDomainRepository = dnaSequenceDomainRepository;
     }
 
     public boolean isMutant(String[] dna) {
-
+        validateDnaSequence(dna);
         try {
             int quantitiyMutants = 0;
             int sizeRowsSequenceDna = dna.length;
@@ -40,7 +37,7 @@ public class DnaSequenceDomainService {
                                 && dna[i].charAt(j + 2) == dna[i].charAt(j + 3)) {
 
                             quantitiyMutants++;
-                            return true;
+
                         }
                     }
 
@@ -50,7 +47,7 @@ public class DnaSequenceDomainService {
                                 && dna[i + 1].charAt(j) == dna[i + 2].charAt(j)
                                 && dna[i + 2].charAt(j) == dna[i + 3].charAt(j)) {
                             quantitiyMutants++;
-                            return true;
+
                         }
                     }
 
@@ -61,27 +58,26 @@ public class DnaSequenceDomainService {
                                 && dna[i + 1].charAt(j + 1) == dna[i + 2].charAt(j + 2)
                                 && dna[i + 2].charAt(j + 2) == dna[i + 3].charAt(j + 3)) {
                             quantitiyMutants++;
-                            return true;
                         }
                     }
                 }
 
                 //Check sequence Diagonal Right to Left
-                for (int x = sizeColumnsSequenceDna; x > 2; x--) {
-                    if (i < sizeRowsSequenceDna - 3 ) {
+                for (int x = sizeColumnsSequenceDna; x > 3; x--) {
+                    if (i < sizeRowsSequenceDna - 3) {
 
                         if (dna[i].charAt(x - 1) == dna[i + 1].charAt(x - 2)
                                 && dna[i + 1].charAt(x - 2) == dna[i + 2].charAt(x - 3)
-                                && dna[i + 2].charAt(x - 3) == dna[i + 3].charAt(x -4 )) {
+                                && dna[i + 2].charAt(x - 3) == dna[i + 3].charAt(x - 4)) {
 
                             quantitiyMutants++;
-                            return true;
                         }
                     }
                 }
+                if (quantitiyMutants > 0) {
+                    return true;
+                }
             }
-
-
 
             return false;
 
