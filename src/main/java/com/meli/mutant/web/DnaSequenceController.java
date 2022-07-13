@@ -1,7 +1,6 @@
 package com.meli.mutant.web;
 
 import com.meli.mutant.domain.DnaSequenceDomain;
-import com.meli.mutant.domain.StatDomain;
 import com.meli.mutant.domain.dto.DnaSequenceDto;
 import com.meli.mutant.domain.service.DnaSequenceDomainService;
 import org.apache.juli.logging.Log;
@@ -27,20 +26,18 @@ public class DnaSequenceController {
     public ResponseEntity<DnaSequenceDomain> isMutant(@RequestBody DnaSequenceDto dnaSequence) {
 
         String[] dna = dnaSequence.getDna().toArray(new String[0]);
-        boolean isDnaMutant = dnaSequenceDomainService.isMutant(dna);
-
-        DnaSequenceDomain dnaSequenceDomain = new DnaSequenceDomain();
-        dnaSequenceDomain.setDna(dnaSequence.getDna());
-        dnaSequenceDomain.setMutant(isDnaMutant);
-
         boolean alreadyExists = dnaSequenceDomainService.validateDnaDuplicate(dnaSequence.getDna());
         if (!alreadyExists) {
+            boolean isDnaMutant = dnaSequenceDomainService.isMutant(dna);
+
+            DnaSequenceDomain dnaSequenceDomain = new DnaSequenceDomain();
+            dnaSequenceDomain.setDna(dnaSequence.getDna());
+            dnaSequenceDomain.setMutant(isDnaMutant);
+
             if (isDnaMutant) {
-                dnaSequenceDomainService.updateStats(true);
-                return new ResponseEntity<>(dnaSequenceDomainService.saveDna(dnaSequenceDomain), HttpStatus.OK);
+                return new ResponseEntity<>(dnaSequenceDomainService.saveDnaAndUpdateStats(dnaSequenceDomain,isDnaMutant), HttpStatus.OK);
             } else {
-                 dnaSequenceDomainService.updateStats(false);
-                return new ResponseEntity<>(dnaSequenceDomainService.saveDna(dnaSequenceDomain), HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>(dnaSequenceDomainService.saveDnaAndUpdateStats(dnaSequenceDomain,isDnaMutant), HttpStatus.FORBIDDEN);
             }
         }
 

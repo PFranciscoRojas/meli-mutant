@@ -2,7 +2,6 @@ package com.meli.mutant.domain.service;
 
 import com.meli.mutant.domain.DnaSequenceDomain;
 import com.meli.mutant.domain.StatDomain;
-import com.meli.mutant.domain.dto.StatDomainDto;
 import com.meli.mutant.domain.repository.DnaSequenceDomainRepository;
 import com.meli.mutant.domain.repository.StatDomainRepository;
 import org.apache.juli.logging.Log;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Service
 public class DnaSequenceDomainService {
@@ -163,16 +161,18 @@ public class DnaSequenceDomainService {
             statDomain.setCountMutantDna(countDnaMutant + 1);
             statDomain.setCountHumanDna(countDnaHuman);
             if (countDnaHuman > 0) {
-                statDomain.setRatioStat((double) countDnaMutant + 1 / (double) countDnaHuman);
+                countRatio = Math.round((((double) countDnaMutant + 1 / (double) countDnaHuman) - 1) * 100.0) / 100.0;
+                statDomain.setRatioStat(countRatio);
             } else {
                 statDomain.setRatioStat(1.0);
 
             }
 
         } else {
+            countRatio = Math.round((((double) countDnaMutant / (double) countDnaHuman + 1) - 1) * 100.0) / 100.0;
             statDomain.setCountMutantDna(countDnaMutant);
             statDomain.setCountHumanDna(countDnaHuman + 1);
-            statDomain.setRatioStat((double) countDnaMutant / (double) countDnaHuman + 1);
+            statDomain.setRatioStat(countRatio);
 
         }
 
@@ -180,7 +180,8 @@ public class DnaSequenceDomainService {
 
     }
 
-    public DnaSequenceDomain saveDna(DnaSequenceDomain dnaSequenceDomain) {
+    public DnaSequenceDomain saveDnaAndUpdateStats(DnaSequenceDomain dnaSequenceDomain, boolean isDnaMutant) {
+        updateStats(isDnaMutant);
         return dnaSequenceDomainRepository.save(dnaSequenceDomain);
     }
 }
