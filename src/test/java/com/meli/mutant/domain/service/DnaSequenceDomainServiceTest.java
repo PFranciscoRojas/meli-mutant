@@ -1,45 +1,69 @@
 package com.meli.mutant.domain.service;
 
 import com.meli.mutant.domain.repository.DnaSequenceDomainRepository;
-import org.junit.jupiter.api.BeforeAll;
+import com.meli.mutant.domain.repository.StatDomainRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@AutoConfigureTestEntityManager
+@AutoConfigureMockMvc
 class DnaSequenceDomainServiceTest {
 
     DnaSequenceDomainRepository dnaSequenceDomainRepository = Mockito.mock(DnaSequenceDomainRepository.class);
-    DnaSequenceDomainService dnaSequenceDomainService = new DnaSequenceDomainService(dnaSequenceDomainRepository);
+    StatDomainRepository statDomainRepository = Mockito.mock(StatDomainRepository.class);
+    StatDomainService statDomainService = Mockito.mock(StatDomainService.class);
+    DnaSequenceDomainService dnaSequenceDomainService = new DnaSequenceDomainService(dnaSequenceDomainRepository,statDomainRepository,statDomainService);
 
     @Test
     public void be_false_when_sequence_dna_is_null() {
-        assertFalse(dnaSequenceDomainService.validateDnaSequence(null));
+
+        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            dnaSequenceDomainService.validateDnaSequence(null);
+        });
+        Assertions.assertEquals("Sequence Dna mustn't be NULL and size dna should be even", thrown.getMessage());
+
     }
 
     @Test
     public void be_false_when_sequence_dna_is_empty() {
-        String[] dna = {"", " ", "       ", "  ", "    ","                 "};
-        assertFalse(dnaSequenceDomainService.validateDnaSequence(dna));
+
+        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            String[] dna = {"", " ", "       ", "  ", "    ","                 "};
+            dnaSequenceDomainService.validateDnaSequence(dna);
+        });
+        Assertions.assertEquals("Sequence only accept characters[A - T - C - G] and shouldn't be empty", thrown.getMessage());
     }
     @Test
     public void be_false_when_sequence_dna_is_not_even_size() {
-        String[] dna = {"ATGCGA", "CAGTGC", "TTATGT", "AGAAGG","CCCCTA"};
-        assertFalse(dnaSequenceDomainService.validateDnaSequence(dna));
+
+        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            String[] dna = {"ATGCGA", "CAGTGC", "TTATGT", "AGAAGG","CCCCTA"};
+            dnaSequenceDomainService.validateDnaSequence(dna);
+        });
+        Assertions.assertEquals("Sequence Dna mustn't be NULL and size dna should be even", thrown.getMessage());
     }
     @Test
     public void be_false_when_sequence_dna_contains_character_diferents_to_A_T_C_G() {
-        String[] dna = {"ATGCGA", "CACCGC", "TTATGT", "AGAYYG","TCACTG","CCCCTA"};
-        assertFalse(dnaSequenceDomainService.validateDnaSequence(dna));
+
+        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            String[] dna = {"ATGCGA", "CACCGC", "TTATGT", "AGAYYG","TCACTG","CCCCTA"};
+            dnaSequenceDomainService.validateDnaSequence(dna);
+        });
+        Assertions.assertEquals("Sequence only accept characters[A - T - C - G] and shouldn't be empty", thrown.getMessage());
     }
     @Test
     public void be_false_when_sequence_dna_contains_string_with_diferent_size() {
-        String[] dna = {"ATGCGA", "CACCCT", "TTATGT", "AGAG","TCACTG","CCCCTA"};
-        assertFalse(dnaSequenceDomainService.validateDnaSequence(dna));
+
+        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            String[] dna = {"ATGCGA", "CACCCT", "TTATGT", "AGAG","TCACTG","CCCCTA"};
+            dnaSequenceDomainService.validateDnaSequence(dna);
+        });
+        Assertions.assertEquals("Sequence Dna contain strings with different size", thrown.getMessage());
     }
 
     @Test

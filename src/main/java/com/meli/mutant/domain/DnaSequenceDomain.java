@@ -1,9 +1,11 @@
 package com.meli.mutant.domain;
 
+import java.util.List;
+
 public class DnaSequenceDomain {
 
     private String idDnaSequence;
-    private String[] dna;
+    private List<String> dna;
     private Boolean mutant;
 
     public String getIdDnaSequence() {
@@ -14,11 +16,11 @@ public class DnaSequenceDomain {
         this.idDnaSequence = idDnaSequence;
     }
 
-    public String[] getDna() {
+    public List<String> getDna() {
         return dna;
     }
 
-    public void setDna(String[] dna) {
+    public void setDna(List<String> dna) {
         this.dna = dna;
     }
 

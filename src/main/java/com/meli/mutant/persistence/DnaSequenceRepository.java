@@ -7,6 +7,8 @@ import com.meli.mutant.persistence.entity.DnaSequence;
 import com.meli.mutant.persistence.mapper.DnaSequenceMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class DnaSequenceRepository implements DnaSequenceDomainRepository {
 
@@ -22,5 +24,10 @@ public class DnaSequenceRepository implements DnaSequenceDomainRepository {
     public DnaSequenceDomain save(DnaSequenceDomain dnaSequenceDomain) {
         DnaSequence dnaSequence = mapper.toDnaSequence(dnaSequenceDomain);
         return mapper.toDnaSequenceDomain(dnaCrudRepository.save(dnaSequence));
+    }
+
+    @Override
+    public List<String> getByDna(List<String> dna) {
+        return dnaCrudRepository.findByDna(dna);
     }
 }

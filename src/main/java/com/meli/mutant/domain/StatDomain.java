@@ -7,6 +7,26 @@ public class StatDomain {
     private Integer countHumanDna;
     private Double ratioStat;
 
+    public StatDomain(){
+
+    }
+    public StatDomain(Integer countMutantDna, Integer countHumanDna) {
+        this.countMutantDna = countMutantDna;
+        this.countHumanDna = countHumanDna;
+
+        if (countMutantDna == 0 && countHumanDna == 0) {
+            this.ratioStat = 0.0;
+        } else {
+            if (countHumanDna == 0) {
+                this.ratioStat = Double.valueOf(1);
+            } else {
+                this.ratioStat = Double.valueOf(countMutantDna / countHumanDna) / 10;
+            }
+        }
+    }
+
+
+
     public String getIdStat() {
         return idStat;
     }

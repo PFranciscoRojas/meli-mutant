@@ -6,7 +6,6 @@ import com.meli.mutant.domain.dto.DnaSequenceDto;
 import com.meli.mutant.domain.service.DnaSequenceDomainService;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
-import org.springframework.boot.json.JsonParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,25 +21,31 @@ public class DnaSequenceController {
 
     public DnaSequenceController(DnaSequenceDomainService dnaSequenceDomainService) {
         this.dnaSequenceDomainService = dnaSequenceDomainService;
-
     }
 
     @PostMapping("/mutant")
     public ResponseEntity<DnaSequenceDomain> isMutant(@RequestBody DnaSequenceDto dnaSequence) {
-        LOGGER.debug("dnaSequence by Postman: " + dnaSequence);
 
         String[] dna = dnaSequence.getDna().toArray(new String[0]);
         boolean isDnaMutant = dnaSequenceDomainService.isMutant(dna);
-        DnaSequenceDomain dnaSequenceDomain = new DnaSequenceDomain();
-        dnaSequenceDomain.setDna(dna);
-        dnaSequenceDomain.setMutant(isDnaMutant);
-        LOGGER.debug("dnaSequenceDomain by Postman: "+ dnaSequenceDomain);
 
-        if (isDnaMutant) {
-            return new ResponseEntity<>(dnaSequenceDomainService.save(dnaSequenceDomain), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(dnaSequenceDomainService.save(dnaSequenceDomain), HttpStatus.FORBIDDEN);
+        DnaSequenceDomain dnaSequenceDomain = new DnaSequenceDomain();
+        dnaSequenceDomain.setDna(dnaSequence.getDna());
+        dnaSequenceDomain.setMutant(isDnaMutant);
+
+        boolean alreadyExists = dnaSequenceDomainService.validateDnaDuplicate(dnaSequence.getDna());
+        if (!alreadyExists) {
+            if (isDnaMutant) {
+                dnaSequenceDomainService.updateStats(true);
+                return new ResponseEntity<>(dnaSequenceDomainService.saveDna(dnaSequenceDomain), HttpStatus.OK);
+            } else {
+                 dnaSequenceDomainService.updateStats(false);
+                return new ResponseEntity<>(dnaSequenceDomainService.saveDna(dnaSequenceDomain), HttpStatus.FORBIDDEN);
+            }
         }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
     }
 
 }

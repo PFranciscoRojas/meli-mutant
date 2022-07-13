@@ -1,6 +1,7 @@
 package com.meli.mutant.web;
 
 import com.meli.mutant.domain.StatDomain;
+import com.meli.mutant.domain.dto.StatDomainDto;
 import com.meli.mutant.domain.service.StatDomainService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,8 @@ public class StatController {
     }
 
     @GetMapping("/stats")
-    public ResponseEntity<List<StatDomain>> getAll(){
-        return new ResponseEntity<>(statDomainService.getAll(), HttpStatus.OK);
+    public ResponseEntity<List<StatDomainDto>> getAllDto(){
+        return new ResponseEntity<>(statDomainService.getAllDto(), HttpStatus.OK);
     }
 
 }
