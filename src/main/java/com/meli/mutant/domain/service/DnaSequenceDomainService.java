@@ -126,24 +126,58 @@ public class DnaSequenceDomainService {
 
 
     public Optional<StatDomain> updateStats(boolean isMutant) {
+        int countDnaMutant = 0;
+        int countDnaHuman = 0;
         List<StatDomain> statsDomain = statDomainService.getAll();
+        StatDomain statDomain;
+        if (statsDomain.isEmpty()) {
+            if (isMutant) {
+                countDnaMutant++;
+            } else {
+                countDnaHuman++;
+            }
+            statDomain = new StatDomain(countDnaMutant, countDnaHuman);
+            return createStatInitial(isMutant, statDomain);
+
+        } else {
+
+            return updateStat(isMutant);
+        }
+    }
+
+    public Optional<StatDomain> createStatInitial(boolean isMutant, StatDomain statDomain) {
+        return statDomainRepository.createStat(isMutant, statDomain);
+
+    }
+
+    public Optional<StatDomain> updateStat(boolean isMutant) {
+        List<StatDomain> statsDomain = statDomainService.getAll();
+        StatDomain statDomain = new StatDomain();
+
         String idStatDomain = statsDomain.stream().map(StatDomain::getIdStat).findAny().orElseThrow();
         int countDnaHuman = statsDomain.stream().map(StatDomain::getCountHumanDna).findAny().orElseThrow();
         int countDnaMutant = statsDomain.stream().map(StatDomain::getCountMutantDna).findAny().orElseThrow();
+        double countRatio = 0.0;
 
-        StatDomain statDomain = new StatDomain();
         if (isMutant) {
             statDomain.setCountMutantDna(countDnaMutant + 1);
             statDomain.setCountHumanDna(countDnaHuman);
+            if (countDnaHuman > 0) {
+                statDomain.setRatioStat((double) countDnaMutant + 1 / (double) countDnaHuman);
+            } else {
+                statDomain.setRatioStat(1.0);
+
+            }
+
         } else {
             statDomain.setCountMutantDna(countDnaMutant);
             statDomain.setCountHumanDna(countDnaHuman + 1);
-        }
-        if (countDnaHuman > 0) {
-            statDomain.setRatioStat((double) countDnaHuman + 1 / (double) countDnaHuman + 1);
+            statDomain.setRatioStat((double) countDnaMutant / (double) countDnaHuman + 1);
+
         }
 
         return statDomainRepository.updateStatsById(idStatDomain, isMutant, statDomain);
+
     }
 
     public DnaSequenceDomain saveDna(DnaSequenceDomain dnaSequenceDomain) {

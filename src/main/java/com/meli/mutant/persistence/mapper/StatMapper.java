@@ -23,9 +23,9 @@ public interface StatMapper {
 
     List<StatDomain> toStatsDomain(List<Stat> stats);
     @Mappings({
-            @Mapping(source = "count_mutant_dna",target = "countMutantDnaDto"),
-            @Mapping(source = "count_human_dna",target = "countHumanDnaDto"),
-            @Mapping(source = "ratio",target = "ratioStatDto")
+            @Mapping(source = "count_mutant_dna",target = "count_mutant_dna"),
+            @Mapping(source = "count_human_dna",target = "count_human_dna"),
+            @Mapping(source = "ratio",target = "ratio")
     })
     StatDomainDto toStatDomainDto(Stat stat);
     List<StatDomainDto> toStatsDomainDto(List<Stat> stats);

@@ -49,4 +49,10 @@ public class StatRepository implements StatDomainRepository {
         );
 
     }
+
+    @Override
+    public Optional<StatDomain> createStat(boolean isMutant, StatDomain statDomain) {
+        Stat stat = mapper.toStat(statDomain);
+        return Optional.ofNullable(mapper.toStatDomain(statCrudRepository.save(stat)));
+    }
 }

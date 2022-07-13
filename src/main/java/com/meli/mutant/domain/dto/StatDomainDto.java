@@ -2,31 +2,31 @@ package com.meli.mutant.domain.dto;
 
 public class StatDomainDto {
 
-    private Integer countMutantDnaDto;
-    private Integer countHumanDnaDto;
-    private Double ratioStatDto;
+    private Integer count_mutant_dna;
+    private Integer count_human_dna;
+    private Double ratio;
 
-    public Integer getCountMutantDnaDto() {
-        return countMutantDnaDto;
+    public Integer getCount_mutant_dna() {
+        return count_mutant_dna;
     }
 
-    public void setCountMutantDnaDto(Integer countMutantDnaDto) {
-        this.countMutantDnaDto = countMutantDnaDto;
+    public void setCount_mutant_dna(Integer count_mutant_dna) {
+        this.count_mutant_dna = count_mutant_dna;
     }
 
-    public Integer getCountHumanDnaDto() {
-        return countHumanDnaDto;
+    public Integer getCount_human_dna() {
+        return count_human_dna;
     }
 
-    public void setCountHumanDnaDto(Integer countHumanDnaDto) {
-        this.countHumanDnaDto = countHumanDnaDto;
+    public void setCount_human_dna(Integer count_human_dna) {
+        this.count_human_dna = count_human_dna;
     }
 
-    public Double getRatioStatDto() {
-        return ratioStatDto;
+    public Double getRatio() {
+        return ratio;
     }
 
-    public void setRatioStatDto(Double ratioStatDto) {
-        this.ratioStatDto = ratioStatDto;
+    public void setRatio(Double ratio) {
+        this.ratio = ratio;
     }
 }

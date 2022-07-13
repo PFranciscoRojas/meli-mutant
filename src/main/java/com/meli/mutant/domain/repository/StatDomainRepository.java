@@ -12,5 +12,6 @@ public interface StatDomainRepository {
     List<StatDomain> getAll();
 
     Optional<StatDomain> updateStatsById(String id, boolean isMutant,StatDomain statDomain);
+    Optional<StatDomain> createStat(boolean isMutant,StatDomain statDomain);
 
 }

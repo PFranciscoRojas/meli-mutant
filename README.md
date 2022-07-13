@@ -1,1 +1,6 @@
 # meli-mutant
+
+## JSON INITIAL
+"count_mutant_dna": 0,
+"count_human_dna": 0,
+"ratio": 0,
