@@ -48,10 +48,10 @@ class StatControllerTest {
     }
 
     @Test
-    void method_get_response_with_count_human_equal_40_and_count_mutant_equal_10() {
-        StatDomain statDomain = new StatDomain(40,10);
+    void method_get_response_with_count_human_equal_40_and_count_mutant_equal_100() {
+        StatDomain statDomain = new StatDomain(40,100);
         Assertions.assertEquals(40, statDomain.getCountMutantDna());
-        Assertions.assertEquals(10, statDomain.getCountHumanDna());
+        Assertions.assertEquals(100, statDomain.getCountHumanDna());
         Assertions.assertEquals(0.4, statDomain.getRatioStat());
     }
 

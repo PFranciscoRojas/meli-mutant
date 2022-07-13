@@ -27,22 +27,19 @@ public class DnaSequenceController {
 
         String[] dna = dnaSequence.getDna().toArray(new String[0]);
         boolean alreadyExists = dnaSequenceDomainService.validateDnaDuplicate(dnaSequence.getDna());
+        boolean isDnaMutant = dnaSequenceDomainService.isMutant(dna);
         if (!alreadyExists) {
-            boolean isDnaMutant = dnaSequenceDomainService.isMutant(dna);
-
             DnaSequenceDomain dnaSequenceDomain = new DnaSequenceDomain();
             dnaSequenceDomain.setDna(dnaSequence.getDna());
             dnaSequenceDomain.setMutant(isDnaMutant);
-
-            if (isDnaMutant) {
-                return new ResponseEntity<>(dnaSequenceDomainService.saveDnaAndUpdateStats(dnaSequenceDomain,isDnaMutant), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(dnaSequenceDomainService.saveDnaAndUpdateStats(dnaSequenceDomain,isDnaMutant), HttpStatus.FORBIDDEN);
-            }
+            dnaSequenceDomainService.saveDnaAndUpdateStats(dnaSequenceDomain, isDnaMutant);
         }
 
-        return new ResponseEntity<>(HttpStatus.OK);
-
+        if (isDnaMutant) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
 }

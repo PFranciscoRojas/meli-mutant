@@ -21,7 +21,7 @@ public class StatDomain {
             if (countHumanDna == 0) {
                 this.ratioStat = 1.0;
             } else {
-                this.ratioStat = Double.valueOf(Math.round((countMutantDna / countHumanDna) * 100.0) / 100.0);
+                this.ratioStat =  Math.round((((double) countMutantDna / (double) countHumanDna + 1) - 1) * 100.0) / 100.0;
             }
         }
     }
