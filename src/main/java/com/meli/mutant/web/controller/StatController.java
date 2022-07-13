@@ -1,8 +1,10 @@
-package com.meli.mutant.web;
+package com.meli.mutant.web.controller;
 
 import com.meli.mutant.domain.StatDomain;
 import com.meli.mutant.domain.dto.StatDomainDto;
 import com.meli.mutant.domain.service.StatDomainService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +24,9 @@ public class StatController {
     }
 
     @GetMapping("/stats")
-    public ResponseEntity<List<StatDomainDto>> getAllDto(){
+    @ApiOperation("Get stats about quantity humans and mutants")
+    @ApiResponse(code = 200, message = "OK")
+    public ResponseEntity<List<StatDomainDto>> getAllDto() {
         return new ResponseEntity<>(statDomainService.getAllDto(), HttpStatus.OK);
     }
 

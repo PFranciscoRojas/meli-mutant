@@ -1,8 +1,12 @@
-package com.meli.mutant.web;
+package com.meli.mutant.web.controller;
 
 import com.meli.mutant.domain.DnaSequenceDomain;
 import com.meli.mutant.domain.dto.DnaSequenceDto;
 import com.meli.mutant.domain.service.DnaSequenceDomainService;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 import org.springframework.http.HttpStatus;
@@ -23,6 +27,11 @@ public class DnaSequenceController {
     }
 
     @PostMapping("/mutant")
+    @ApiOperation(value = "Save DNA Mutant or Human", notes = "Ex: 'AACAGA', 'AACCTA','TTCTGT', 'CAGTGC','CCTCTC','AGAATG'")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK (Is a Mutant)"),
+            @ApiResponse(code = 403, message = "FORBIDDEN (Is A Human)")
+    })
     public ResponseEntity<DnaSequenceDomain> isMutant(@RequestBody DnaSequenceDto dnaSequence) {
 
         String[] dna = dnaSequence.getDna().toArray(new String[0]);
