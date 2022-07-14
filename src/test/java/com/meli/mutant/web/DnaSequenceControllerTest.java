@@ -1,11 +1,7 @@
 package com.meli.mutant.web;
 
-import com.meli.mutant.domain.repository.DnaSequenceDomainRepository;
-import com.meli.mutant.domain.service.DnaSequenceDomainService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;

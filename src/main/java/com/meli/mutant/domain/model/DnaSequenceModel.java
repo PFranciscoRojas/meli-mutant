@@ -1,8 +1,8 @@
-package com.meli.mutant.domain;
+package com.meli.mutant.domain.model;
 
 import java.util.List;
 
-public class DnaSequenceDomain {
+public class DnaSequenceModel {
 
     private String idDnaSequence;
     private List<String> dna;

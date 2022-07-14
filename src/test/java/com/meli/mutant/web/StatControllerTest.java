@@ -1,7 +1,6 @@
 package com.meli.mutant.web;
 
-import com.meli.mutant.domain.StatDomain;
-import com.meli.mutant.persistence.entity.Stat;
+import com.meli.mutant.domain.model.StatModel;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,18 +40,18 @@ class StatControllerTest {
 
     @Test
     void method_get_response_with_count_human_equal_zero_and_count_mutant_equal_zero()  {
-        StatDomain statDomain = new StatDomain(0,0);
-        Assertions.assertEquals(0, statDomain.getCountHumanDna());
-        Assertions.assertEquals(0, statDomain.getCountMutantDna());
-        Assertions.assertEquals(0, statDomain.getRatioStat());
+        StatModel statModel = new StatModel(0,0);
+        Assertions.assertEquals(0, statModel.getCountHumanDna());
+        Assertions.assertEquals(0, statModel.getCountMutantDna());
+        Assertions.assertEquals(0, statModel.getRatioStat());
     }
 
     @Test
     void method_get_response_with_count_human_equal_40_and_count_mutant_equal_100() {
-        StatDomain statDomain = new StatDomain(40,100);
-        Assertions.assertEquals(40, statDomain.getCountMutantDna());
-        Assertions.assertEquals(100, statDomain.getCountHumanDna());
-        Assertions.assertEquals(0.4, statDomain.getRatioStat());
+        StatModel statModel = new StatModel(40,100);
+        Assertions.assertEquals(40, statModel.getCountMutantDna());
+        Assertions.assertEquals(100, statModel.getCountHumanDna());
+        Assertions.assertEquals(0.4, statModel.getRatioStat());
     }
 
 }

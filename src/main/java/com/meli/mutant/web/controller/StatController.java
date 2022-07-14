@@ -1,33 +1,30 @@
 package com.meli.mutant.web.controller;
 
-import com.meli.mutant.domain.StatDomain;
-import com.meli.mutant.domain.dto.StatDomainDto;
-import com.meli.mutant.domain.service.StatDomainService;
+import com.meli.mutant.domain.model.StatModel;
+import com.meli.mutant.domain.service.StatService;
+import com.meli.mutant.web.dto.StatDto;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/")
 public class StatController {
 
-    private final StatDomainService statDomainService;
+    private final StatService statService;
 
-    public StatController(StatDomainService statDomainService) {
-        this.statDomainService = statDomainService;
+    public StatController(StatService statService) {
+        this.statService = statService;
     }
 
     @GetMapping("/stats")
     @ApiOperation("Get stats about quantity humans and mutants")
     @ApiResponse(code = 200, message = "OK")
-    public ResponseEntity<List<StatDomainDto>> getAllDto() {
-        return new ResponseEntity<>(statDomainService.getAllDto(), HttpStatus.OK);
+    public ResponseEntity<StatDto> getStat() {
+        return new ResponseEntity<>(statService.getStat(), HttpStatus.OK);
     }
 
 }

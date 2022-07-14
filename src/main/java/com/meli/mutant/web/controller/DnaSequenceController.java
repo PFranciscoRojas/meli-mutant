@@ -1,9 +1,10 @@
 package com.meli.mutant.web.controller;
 
-import com.meli.mutant.domain.DnaSequenceDomain;
-import com.meli.mutant.domain.dto.DnaSequenceDto;
-import com.meli.mutant.domain.service.DnaSequenceDomainService;
-import io.swagger.annotations.ApiModel;
+import com.meli.mutant.domain.model.DnaSequenceModel;
+import com.meli.mutant.persistence.entity.DnaSequence;
+import com.meli.mutant.web.dto.DnaSequenceDto;
+import com.meli.mutant.domain.service.DnaSequenceService;
+import com.meli.mutant.web.exceptions.ExceptionDna;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -19,11 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 public class DnaSequenceController {
-    private final DnaSequenceDomainService dnaSequenceDomainService;
-    private final Log LOGGER = LogFactory.getLog(DnaSequenceDomainService.class);
+    private final DnaSequenceService dnaSequenceService;
+    private final Log LOGGER = LogFactory.getLog(DnaSequenceService.class);
 
-    public DnaSequenceController(DnaSequenceDomainService dnaSequenceDomainService) {
-        this.dnaSequenceDomainService = dnaSequenceDomainService;
+    public DnaSequenceController(DnaSequenceService dnaSequenceService) {
+        this.dnaSequenceService = dnaSequenceService;
     }
 
     @PostMapping("/mutant")
@@ -32,16 +33,23 @@ public class DnaSequenceController {
             @ApiResponse(code = 200, message = "OK (Is a Mutant)"),
             @ApiResponse(code = 403, message = "FORBIDDEN (Is A Human)")
     })
-    public ResponseEntity<DnaSequenceDomain> isMutant(@RequestBody DnaSequenceDto dnaSequence) {
+    public ResponseEntity<DnaSequenceModel> isMutant(@RequestBody DnaSequenceDto dnaSequence) throws ExceptionDna {
 
         String[] dna = dnaSequence.getDna().toArray(new String[0]);
-        boolean alreadyExists = dnaSequenceDomainService.validateDnaDuplicate(dnaSequence.getDna());
-        boolean isDnaMutant = dnaSequenceDomainService.isMutant(dna);
-        if (!alreadyExists) {
-            DnaSequenceDomain dnaSequenceDomain = new DnaSequenceDomain();
-            dnaSequenceDomain.setDna(dnaSequence.getDna());
-            dnaSequenceDomain.setMutant(isDnaMutant);
-            dnaSequenceDomainService.saveDnaAndUpdateStats(dnaSequenceDomain, isDnaMutant);
+        boolean isDnaMutant;
+        DnaSequenceModel currentDnaSequence = dnaSequenceService.validateDnaDuplicate(dnaSequence.getDna());
+
+        if (currentDnaSequence != null) {
+            isDnaMutant = currentDnaSequence.getMutant();
+
+        }else{
+
+            isDnaMutant = dnaSequenceService.isMutant(dna);
+            DnaSequenceModel dnaSequenceModel = new DnaSequenceModel();
+            dnaSequenceModel.setDna(dnaSequence.getDna());
+            dnaSequenceModel.setMutant(isDnaMutant);
+            dnaSequenceService.saveDnaAndUpdateStats(dnaSequenceModel, isDnaMutant);
+
         }
 
         if (isDnaMutant) {

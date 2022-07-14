@@ -1,4 +1,4 @@
-package com.meli.mutant.domain.dto;
+package com.meli.mutant.web.dto;
 
 import java.util.List;
 

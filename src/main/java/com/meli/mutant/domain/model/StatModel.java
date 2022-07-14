@@ -1,17 +1,17 @@
-package com.meli.mutant.domain;
+package com.meli.mutant.domain.model;
 
-public class StatDomain {
+public class StatModel {
 
     private String idStat;
     private Integer countMutantDna;
     private Integer countHumanDna;
     private Double ratioStat;
 
-    public StatDomain() {
+    public StatModel() {
 
     }
 
-    public StatDomain(Integer countMutantDna, Integer countHumanDna) {
+    public StatModel(Integer countMutantDna, Integer countHumanDna) {
         this.countMutantDna = countMutantDna;
         this.countHumanDna = countHumanDna;
 

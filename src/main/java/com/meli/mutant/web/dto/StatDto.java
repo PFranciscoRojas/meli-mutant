@@ -1,6 +1,6 @@
-package com.meli.mutant.domain.dto;
+package com.meli.mutant.web.dto;
 
-public class StatDomainDto {
+public class StatDto {
 
     private Integer count_mutant_dna;
     private Integer count_human_dna;

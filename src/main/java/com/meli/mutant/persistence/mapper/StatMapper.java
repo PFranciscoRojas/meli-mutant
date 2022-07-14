@@ -1,8 +1,8 @@
 package com.meli.mutant.persistence.mapper;
 
-import com.meli.mutant.domain.StatDomain;
-import com.meli.mutant.domain.dto.StatDomainDto;
+import com.meli.mutant.domain.model.StatModel;
 import com.meli.mutant.persistence.entity.Stat;
+import com.meli.mutant.web.dto.StatDto;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -19,17 +19,17 @@ public interface StatMapper {
             @Mapping(source = "count_human_dna",target = "countHumanDna"),
             @Mapping(source = "ratio",target = "ratioStat")
     })
-    StatDomain toStatDomain(Stat stat);
+    StatModel toStatModel(Stat stat);
 
-    List<StatDomain> toStatsDomain(List<Stat> stats);
+    List<StatModel> toStatsModel(List<Stat> stats);
     @Mappings({
-            @Mapping(source = "count_mutant_dna",target = "count_mutant_dna"),
-            @Mapping(source = "count_human_dna",target = "count_human_dna"),
-            @Mapping(source = "ratio",target = "ratio")
+            @Mapping(source = "countMutantDna",target = "count_mutant_dna"),
+            @Mapping(source = "countHumanDna",target = "count_human_dna"),
+            @Mapping(source = "ratioStat",target = "ratio")
     })
-    StatDomainDto toStatDomainDto(Stat stat);
-    List<StatDomainDto> toStatsDomainDto(List<Stat> stats);
+    StatDto toStatDto(StatModel statModel);
+    List<StatDto> toStatsDto(List<Stat> stats);
 
     @InheritInverseConfiguration
-    Stat toStat(StatDomain statDomain);
+    Stat toStat(StatModel statModel);
 }

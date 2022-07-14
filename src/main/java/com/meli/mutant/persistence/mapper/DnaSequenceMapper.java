@@ -1,6 +1,6 @@
 package com.meli.mutant.persistence.mapper;
 
-import com.meli.mutant.domain.DnaSequenceDomain;
+import com.meli.mutant.domain.model.DnaSequenceModel;
 import com.meli.mutant.persistence.entity.DnaSequence;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
@@ -17,11 +17,10 @@ public interface DnaSequenceMapper {
             @Mapping(source = "dna",target = "dna"),
             @Mapping(source = "mutant",target = "mutant")
     })
+    DnaSequenceModel toDnaSequenceDomain(DnaSequence dnaSequence);
 
-    DnaSequenceDomain toDnaSequenceDomain(DnaSequence dnaSequence);
-
-    List<DnaSequenceDomain> toDnaSequencesDomain(List<DnaSequenceDomain> dnaSequences);
+    List<DnaSequenceModel> toDnaSequencesDomain(List<DnaSequenceModel> dnaSequences);
 
     @InheritInverseConfiguration
-    DnaSequence toDnaSequence(DnaSequenceDomain dnaSequenceDomain);
+    DnaSequence toDnaSequence(DnaSequenceModel dnaSequenceModel);
 }
