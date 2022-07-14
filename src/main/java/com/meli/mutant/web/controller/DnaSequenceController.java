@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 public class DnaSequenceController {
-    private final DnaSequenceService dnaSequenceService;
     private final Log LOGGER = LogFactory.getLog(DnaSequenceService.class);
+    private final DnaSequenceService dnaSequenceService;
 
     public DnaSequenceController(DnaSequenceService dnaSequenceService) {
         this.dnaSequenceService = dnaSequenceService;

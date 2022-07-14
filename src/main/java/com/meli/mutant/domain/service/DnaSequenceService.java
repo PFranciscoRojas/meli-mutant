@@ -4,11 +4,13 @@ import com.meli.mutant.domain.model.DnaSequenceModel;
 import com.meli.mutant.domain.model.StatModel;
 import com.meli.mutant.domain.repository.DnaSequenceDomainRepository;
 import com.meli.mutant.domain.repository.StatDomainRepository;
+import com.mongodb.spi.dns.DnsException;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import com.meli.mutant.web.exceptions.ExceptionDna;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -23,8 +25,8 @@ public class DnaSequenceService {
         this.statDomainRepository = statDomainRepository;
     }
 
-    public boolean isMutant(String[] dna) throws ExceptionDna {
-
+    public boolean isMutant(String[] dna) {
+        LOGGER.info("DnaSequenceService method isMutant: " + Arrays.toString(dna));
         validateDnaSequence(dna);
         try {
             int quantityMutants = 0;
@@ -87,34 +89,35 @@ public class DnaSequenceService {
 
             return false;
 
-        } catch (ExceptionDna e) {
+        } catch (RuntimeException e) {
             LOGGER.error("Error DnaSequenceService method isMutant: " + e);
-            throw new ExceptionDna("Error DnaSequenceService method isMutant: " + e);
+            throw new RuntimeException(e);
         }
 
     }
 
     public void validateDnaSequence(String[] dna) {
-        String regexATCGLetters = "[ATCG]+";
-        int sequenceSize = 0;
-        if (dna == null || dna.length % 2 != 0)
-            throw new ExceptionDna("Sequence Dna mustn't be NULL and size dna should be even");
 
-//        throw new IllegalArgumentException("Sequence Dna mustn't be NULL and size dna should be even");
-        for (String sequence : dna) {
-            if (sequenceSize != sequence.length() && sequenceSize != 0) {
-                throw new ExceptionDna("Sequence Dna contain strings with different size");
+            String regexATCGLetters = "[ATCG]+";
+            int sequenceSize = 0;
+            if (dna == null || dna.length % 2 != 0)
+                throw new ExceptionDna("Sequence Dna mustn't be NULL and size dna should be even");
 
-//                throw new IllegalArgumentException("Sequence Dna contain strings with different size");
+            for (String sequence : dna) {
+                if (sequenceSize != sequence.length() && sequenceSize != 0) {
+                    throw new ExceptionDna("Sequence Dna contain strings with different size");
+                }
+
+                if (sequence.trim().equals("") || !sequence.matches(regexATCGLetters)) {
+
+                    throw new ExceptionDna("Sequence only accept characters[A - T - C - G] and shouldn't be empty");
+                }
+                if (sequence.length() != dna.length) {
+                    throw new ExceptionDna("Sequence Dna should be and array of NxN");
+                }
+                sequenceSize = sequence.length();
             }
 
-            if (sequence.trim().equals("") || !sequence.matches(regexATCGLetters)) {
-
-                throw new ExceptionDna("Sequence only accept characters[A - T - C - G] and shouldn't be empty");
-            }
-
-            sequenceSize = sequence.length();
-        }
     }
 
     public DnaSequenceModel validateDnaDuplicate(List<String> dna) {
@@ -131,6 +134,7 @@ public class DnaSequenceService {
 
             StatModel newStatModel = new StatModel();
             StatModel currentStatModel = statDomainRepository.getStat();
+            LOGGER.debug("DnaSequenceService updateStats: " + currentStatModel);
             if (currentStatModel != null) {
                 id = currentStatModel.getIdStat();
                 countDnaHuman = currentStatModel.getCountHumanDna();
@@ -153,7 +157,7 @@ public class DnaSequenceService {
 
             statDomainRepository.updateStats(newStatModel);
         } catch (RuntimeException e) {
-            LOGGER.error("Dna Sequence Service - Method updateStats failed" + e);
+            LOGGER.error("DnaSequenceService updateStats: " + e);
         }
 
     }

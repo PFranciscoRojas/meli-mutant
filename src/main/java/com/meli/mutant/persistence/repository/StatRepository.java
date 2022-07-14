@@ -2,13 +2,17 @@ package com.meli.mutant.persistence.repository;
 
 import com.meli.mutant.domain.model.StatModel;
 import com.meli.mutant.domain.repository.StatDomainRepository;
+import com.meli.mutant.domain.service.DnaSequenceService;
 import com.meli.mutant.persistence.mongo.StatMongoRepository;
 import com.meli.mutant.persistence.entity.Stat;
 import com.meli.mutant.persistence.mapper.StatMapper;
+import org.apache.juli.logging.Log;
+import org.apache.juli.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class StatRepository implements StatDomainRepository {
+    private final Log LOGGER = LogFactory.getLog(DnaSequenceService.class);
     private final StatMongoRepository statMongoRepository;
     private final StatMapper mapper;
 
@@ -26,6 +30,7 @@ public class StatRepository implements StatDomainRepository {
     @Override
     public void updateStats(StatModel newStatModel) {
 
+        LOGGER.debug("StatRepository method updateStats" + newStatModel);
         String idStats = newStatModel.getIdStat();
         double ratio = newStatModel.getRatioStat();
         int countMutantDna = newStatModel.getCountMutantDna();
@@ -49,6 +54,7 @@ public class StatRepository implements StatDomainRepository {
 
     @Override
     public void createStat(StatModel statModel) {
+        LOGGER.debug("StatRepository method createStat" + statModel);
         Stat stat = mapper.toStat(statModel);
         mapper.toStatModel(statMongoRepository.save(stat));
     }

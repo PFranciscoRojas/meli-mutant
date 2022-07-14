@@ -24,7 +24,7 @@ class DnaSequenceServiceTest {
      *  */
 
     @Test
-    public void be_false_when_sequence_dna_is_null() {
+    public void be_exception_when_sequence_dna_is_null() {
 
         ExceptionDna thrown = Assertions.assertThrows(ExceptionDna.class, () -> {
             dnaSequenceService.validateDnaSequence(null);
@@ -32,7 +32,7 @@ class DnaSequenceServiceTest {
         Assertions.assertEquals("Sequence Dna mustn't be NULL and size dna should be even", thrown.getMessage());
     }
     @Test
-    public void be_false_when_sequence_dna_is_empty() {
+    public void be_exception_when_sequence_dna_is_empty() {
 
         ExceptionDna thrown = Assertions.assertThrows(ExceptionDna.class, () -> {
             String[] dna = {"", " ", "       ", "  ", "    ","                 "};
@@ -41,7 +41,7 @@ class DnaSequenceServiceTest {
         Assertions.assertEquals("Sequence only accept characters[A - T - C - G] and shouldn't be empty", thrown.getMessage());
     }
     @Test
-    public void be_false_when_sequence_dna_is_not_even_size() {
+    public void be_exception_when_sequence_dna_is_not_even_size() {
 
         ExceptionDna thrown = Assertions.assertThrows(ExceptionDna.class, () -> {
             String[] dna = {"ATGCGA", "CAGTGC", "TTATGT", "AGAAGG","CCCCTA"};
@@ -50,7 +50,7 @@ class DnaSequenceServiceTest {
         Assertions.assertEquals("Sequence Dna mustn't be NULL and size dna should be even", thrown.getMessage());
     }
     @Test
-    public void be_false_when_sequence_dna_contains_character_diferents_to_A_T_C_G() {
+    public void be_exception_when_sequence_dna_contains_character_diferents_to_A_T_C_G() {
 
         ExceptionDna thrown = Assertions.assertThrows(ExceptionDna.class, () -> {
             String[] dna = {"ATGCGA", "CACCGC", "TTATGT", "AGAYYG","TCACTG","CCCCTA"};
@@ -59,7 +59,17 @@ class DnaSequenceServiceTest {
         Assertions.assertEquals("Sequence only accept characters[A - T - C - G] and shouldn't be empty", thrown.getMessage());
     }
     @Test
-    public void be_false_when_sequence_dna_contains_string_with_diferent_size() {
+    public void be_exception_when_sequence_dna_contains_length_strings_and_length_array_are_differents() {
+
+        ExceptionDna thrown = Assertions.assertThrows(ExceptionDna.class, () -> {
+            String[] dna = {"ATGCGA", "CACCCT", "TTATGT", "TTATGT"};
+            dnaSequenceService.validateDnaSequence(dna);
+        });
+        Assertions.assertEquals("Sequence Dna should be and array of NxN", thrown.getMessage());
+    }
+
+    @Test
+    public void be_exception_when_sequence_dna_contains_string_with_diferent_size() {
 
         ExceptionDna thrown = Assertions.assertThrows(ExceptionDna.class, () -> {
             String[] dna = {"ATGCGA", "CACCCT", "TTATGT", "AGAG","TCACTG","CCCCTA"};
