@@ -29,24 +29,16 @@ public class StatRepository implements StatDomainRepository {
 
     @Override
     public void updateStats(StatModel newStatModel) {
-
         LOGGER.debug("StatRepository method updateStats" + newStatModel);
-        String idStats = newStatModel.getIdStat();
-        double ratio = newStatModel.getRatioStat();
-        int countMutantDna = newStatModel.getCountMutantDna();
-        int countHumanDna = newStatModel.getCountHumanDna();
 
-        if (idStats.equals("")) {
-            StatModel statModel = new StatModel(countMutantDna, countHumanDna);
-            createStat(statModel);
+        if (newStatModel.getIdStat() == null) {
+            createStat(newStatModel);
         } else {
-
-            Stat stat = statMongoRepository.findById(idStats).orElse(null);
-
+            Stat stat = statMongoRepository.findById(newStatModel.getIdStat()).orElse(null);
             if (stat != null) {
-                stat.setCount_mutant_dna(countMutantDna);
-                stat.setCount_human_dna(countHumanDna);
-                stat.setRatio(ratio);
+                stat.setCount_mutant_dna(newStatModel.getCountMutantDna());
+                stat.setCount_human_dna(newStatModel.getCountHumanDna());
+                stat.setRatio(newStatModel.getRatioStat());
                 statMongoRepository.save(stat);
             }
         }

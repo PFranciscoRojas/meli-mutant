@@ -1,10 +1,8 @@
 package com.meli.mutant.web.controller;
 
 import com.meli.mutant.domain.model.DnaSequenceModel;
-import com.meli.mutant.persistence.entity.DnaSequence;
 import com.meli.mutant.web.dto.DnaSequenceDto;
 import com.meli.mutant.domain.service.DnaSequenceService;
-import com.meli.mutant.web.exceptions.ExceptionDna;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -16,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/api")
@@ -33,29 +33,24 @@ public class DnaSequenceController {
             @ApiResponse(code = 200, message = "OK (Is a Mutant)"),
             @ApiResponse(code = 403, message = "FORBIDDEN (Is A Human)")
     })
-    public ResponseEntity<DnaSequenceModel> isMutant(@RequestBody DnaSequenceDto dnaSequence) throws ExceptionDna {
-
+    public ResponseEntity<DnaSequenceModel> isMutant(@RequestBody DnaSequenceDto dnaSequence) throws InterruptedException, ExecutionException {
         String[] dna = dnaSequence.getDna().toArray(new String[0]);
         boolean isDnaMutant;
-        DnaSequenceModel currentDnaSequence = dnaSequenceService.validateDnaDuplicate(dnaSequence.getDna());
-
-        if (currentDnaSequence != null) {
-            isDnaMutant = currentDnaSequence.getMutant();
-
-        }else{
-
+        CompletableFuture<DnaSequenceModel> futureDnaSequence = dnaSequenceService.validateDnaDuplicate(dnaSequence.getDna());
+        if (futureDnaSequence.get() != null) {
+            isDnaMutant = futureDnaSequence.get().getMutant();
+        } else {
             isDnaMutant = dnaSequenceService.isMutant(dna);
             DnaSequenceModel dnaSequenceModel = new DnaSequenceModel();
             dnaSequenceModel.setDna(dnaSequence.getDna());
             dnaSequenceModel.setMutant(isDnaMutant);
-            dnaSequenceService.saveDnaAndUpdateStats(dnaSequenceModel, isDnaMutant);
-
+            futureDnaSequence = dnaSequenceService.saveDnaAndUpdateStats(dnaSequenceModel, isDnaMutant);
         }
 
         if (isDnaMutant) {
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(futureDnaSequence.get(),HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(futureDnaSequence.get(),HttpStatus.FORBIDDEN);
         }
     }
 

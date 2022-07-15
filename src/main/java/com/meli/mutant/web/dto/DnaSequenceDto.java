@@ -6,10 +6,7 @@ public class DnaSequenceDto {
 
     private List<String> dna;
 
-    public DnaSequenceDto() {
-
-    }
-
+    public DnaSequenceDto() {}
     public List<String> getDna() {
         return dna;
     }

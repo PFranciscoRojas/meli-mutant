@@ -85,12 +85,36 @@ POST /api/mutant/
 Si la cadena de strings contiene ADN mutante, respondera
 ```sh
 HTTP/1.1 200 OK
+{
+    "idDnaSequence": "62d1cf5843f28532ea665bc8",
+    "dna": [
+        "ATGCGA",
+        "CAGTGC",
+        "TTATGT",
+        "AGAAGG",
+        "CCCCTA",
+        "TCACTG"
+    ],
+    "mutant": true
+}
 ```
 
 Si la cadena de strings **no** contiene ADN mutante, respondera
 
 ```sh
 HTTP/1.1 403 Forbidden
+{
+    "idDnaSequence": "62d1d4e03194a26b5bc82f64",
+    "dna": [
+        "CTGCGA",
+        "CACTTC",
+        "TGATGT",
+        "CAGGGC",
+        "CACCAC",
+        "TCACTG"
+    ],
+    "mutant": false
+}
 ```
 
 Si la estructura de los string enviados no corresponde al especificado, enviará una respuesta
@@ -134,7 +158,7 @@ http://localhost:8081/swagger-ui/index.html
 ### Diseño Detallado
 #### Porqué se uso MongoDB?
 
-Necesitamos abarcar una base de datos que soporte una cantidad agresiva de peticiones y de forma asíncrona,por ello una base de datos relacional no aplica ya que su escalamiento solo se podría dar de forma horizontal, en ese sentido, se opta por una base de datos no relacional basada en documentos, para seleccionarla se tiene en cuenta el teorema [CAP](https://es.wikipedia.org/wiki/Teorema_CAP) en la que se prioriza la consistencia y la tolerancia a particiones, por esto MongoDB encaja a la perfección al ser un sistema "mono-maestro".
+Necesitamos abarcar una base de datos que soporte una cantidad agresiva de peticiones y de forma asíncrona,por ello una base de datos relacional no aplica ya que su escalamiento solo se podría dar de forma vertical, en ese sentido, se opta por una base de datos no relacional basada en documentos, para seleccionarla se tiene en cuenta el teorema [CAP](https://es.wikipedia.org/wiki/Teorema_CAP) en la que se prioriza la consistencia y la tolerancia a particiones, por esto MongoDB encaja a la perfección al ser un sistema "mono-maestro".
 
 ### Cloud
 
@@ -163,7 +187,7 @@ Un diagrama de secuencia muestra cómo se comunican los objetos, por medio de la
 
 ## Estructura del Proyecto
 
-La estructura de carpetas utilizada es orientada al Dominio, en la que tenemos 3 principales: Controladores, Repositorios y los Servicios. Esto nos permite un bajo acoplamiento ya que las dependencias solo se hacen entre la capa contigua, de esta manera hay independencia entre los módulos.
+La estructura de carpetas utilizada es orientada al Dominio, y se incluye una arquitectura limpia en la que intervienen 3 capas principales: Controladores, Repositorios y los Servicios. Esto nos permite un bajo acoplamiento ya que las dependencias solo se hacen entre la capa contigua de nivel inferior, de esta manera hay independencia entre los módulos.
 
 ![image](https://user-images.githubusercontent.com/4333910/179241805-77399499-b1db-4916-8dbc-e451cbf8df48.png)
 

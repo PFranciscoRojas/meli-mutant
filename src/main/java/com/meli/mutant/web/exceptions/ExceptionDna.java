@@ -4,6 +4,4 @@ public class ExceptionDna extends RuntimeException{
     public ExceptionDna(String message) {
         super(message);
     }
-
-
 }

@@ -7,10 +7,6 @@ public class StatModel {
     private Integer countHumanDna;
     private Double ratioStat;
 
-    public StatModel() {
-
-    }
-
     public StatModel(Integer countMutantDna, Integer countHumanDna) {
         this.countMutantDna = countMutantDna;
         this.countHumanDna = countHumanDna;
@@ -25,7 +21,6 @@ public class StatModel {
             }
         }
     }
-
 
     public String getIdStat() {
         return idStat;
