@@ -100,7 +100,8 @@ HTTP/1.1 400 Bad Request
 ### Direccion API AWS
 
 Aws proporciona una IP publica en la que esta instalado el servicio y se conecta por el puerto 8080
-** 54.211.75.157:8080 **
+
+**54.211.75.157:8080**
 
 ```sh
 GET  54.211.75.157:8080/api/stats
