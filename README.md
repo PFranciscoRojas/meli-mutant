@@ -46,12 +46,6 @@ Ejecutar la aplicación puerto 8081 por defecto
 ```
 ## Uso REST API
 
-### Url API AWS
-
-```sh
-    Direccion IP AWS
-    
-```
 
 ### Obtener Stats
 
@@ -102,9 +96,15 @@ HTTP/1.1 400 Bad Request
     "message": "Sequence Dna contain strings with different size"
 }
 
+### Url API AWS
 
+Aws proporciona una IP publica en la que esta instalado el servicio y se conecta por el puerto 8080
 
+```sh
+    Direccion IP AWS
+    54.211.75.157:8080
 ```
+
 ### Documentación API con Swagger
 
 ```sh
@@ -153,8 +153,7 @@ Un diagrama de secuencia muestra como se comunican los objetos intercambian mens
 
 La estructura de carpetas utilizada es orientada al Dominio en la que tenemos 3 principales que son los controladores, repositorios y los servicios. Esto nos permite un bajo acoplamiento ya que las dependencias se hace entre la capa contigua de esta manera hay independencia entre las capas y modulos.
 
-![](src/main/resources/diagrams/images/Domain Diagram.png)
-
+![image](https://user-images.githubusercontent.com/4333910/179241805-77399499-b1db-4916-8dbc-e451cbf8df48.png)
 
 
 
