@@ -95,14 +95,16 @@ HTTP/1.1 400 Bad Request
     "timestamp": "2022-07-14T23:55:29.6626814",
     "message": "Sequence Dna contain strings with different size"
 }
+```
 
-### Url API AWS
+### Direccion API AWS
 
 Aws proporciona una IP publica en la que esta instalado el servicio y se conecta por el puerto 8080
+** 54.211.75.157:8080 **
 
 ```sh
-    Direccion IP AWS
-    54.211.75.157:8080
+GET  54.211.75.157:8080/api/stats
+POST 54.211.75.157:8080/api/mutant/
 ```
 
 ### Documentación API con Swagger
