@@ -137,7 +137,7 @@ Para el despliegue en cloid se utilizo AWS en el que se crea una instancia EC2 c
 ### Arquitectura C4
 
 Para la representación visual solo se utilizaron las dos primeras capas del modelo C4 ya que al ser una sencilla con pocos endpoints se tiene una clara forma de comunicar el requerimiento.
-![](src/main/resources/diagrams/images/c1 model c4.png)
+![image](https://user-images.githubusercontent.com/4333910/179245305-d09fb918-349d-4c98-a284-2158fcdda663.png)
 ![](src/main/resources/diagrams/images/c2ModelC4.png)
 
 ### Diagramas de secuencia
