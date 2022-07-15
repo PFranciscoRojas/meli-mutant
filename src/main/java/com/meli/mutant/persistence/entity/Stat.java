@@ -3,7 +3,7 @@ package com.meli.mutant.persistence.entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(value = "stats")
+@Document(value = "stats_db")
 public class Stat {
     @Id
     private String id;
